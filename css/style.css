@@ -19,7 +19,7 @@ body {
     position: fixed;
     inset: 0;
     background: #000814;
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -30,6 +30,7 @@ body {
 .loader.hidden {
     opacity: 0;
     visibility: hidden;
+    pointer-events: none;
 }
 
 .rocket-container {
@@ -162,7 +163,7 @@ body {
 
 .card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 0 20px rbga(0, 212, 255, 0.3);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
 }
 
 .card h3 {
@@ -314,6 +315,14 @@ body::after {
     }
 }
 
+body::before,
+body::after,
+.twinkle-layer,
+.nebula {
+    pointer-events: none;
+}
+
+
 .twinkle-layer {
     position: fixed;
     top: 0;
@@ -338,12 +347,17 @@ body::after {
     100% { opacity: 0.4; }
 }
 
+.missions-section {
+    position: relative;
+    z-index: 10;
+}
+
 .mission-section h1 {
     text-align: center;
     margin-bottom: 50px;
 }
 
-.mission-grid {
+.missions-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
@@ -379,4 +393,20 @@ body::after {
 .status {
     margin-top: 10px;
     font-weight: bold;
+}
+
+.filter-container {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+#missionFilter {
+    padding: 8px 15px;
+    border-radius: 6px;
+    border: none;
+    background: #00d4ff;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10;
 }
