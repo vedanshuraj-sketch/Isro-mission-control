@@ -25,63 +25,78 @@ document.addEventListener("DOMContentLoaded", function () {
             launchDate: "14 July 2023",
             rocket: "LVM3",
             status: "Successful",
-            type: "Lunar Mission"
+            type: "Lunar Mission",
+            description: "Indias third lunar exploration mission that achieved successful soft landing near Moon's south pole."
         },
         {
             name: "Mars Orbiter Mission",
             launchDate: "5 November 2013",
             rocket: "PSLV-C25",
             status: "Completed",
-            type: "Mars Mission"
+            type: "Mars Mission",
+            description: "Indias first interplanetary mission that successfully reached Mars orbit on first attempt."
         },
         {
             name: "Aditya-L1",
             launchDate: "2 September 2023",
             rocket: "PSLV-C57",
             status: "Active",
-            type: "Solar Mission"
+            type: "Solar Mission",
+            description: "Indias first dedicated solar mission to study the Sun from Lagrange Point L1."
         }
     ];
 
     const container = document.getElementById("missions-container");
-    const filter = document.getElementById("missionFilter");
+    const modal = document.getElementById("missionModal");
+    const closeBtn = document.querySelector(".close-btn");
 
-    // ONLY run mission code if container exists
-    if (container) {
+    const modalTitle = document.getElementById("modalTitle");
+    const modalLaunch = document.getElementById("modalLaunch");
+    const modalRocket = document.getElementById("modalRocket");
+    const modalStatus = document.getElementById("modalStatus");
+    const modalDescription = document.getElementById("modalDescription");
 
-        function renderMissions(list) {
-            container.innerHTML = "";
+    function renderMissions() {
+        container.innerHTML = "";
 
-            list.forEach(mission => {
-                const card = document.createElement("div");
-                card.className = "mission-card";
+        missions.forEach(mission => {
+            const card = document.createElement("div");
+            card.classList.add("mission-card");
 
-                card.innerHTML = `
-                    <h2>${mission.name}</h2>
-                    <span class="mission-type">${mission.type}</span>
-                    <p><strong>Launch Date:</strong> ${mission.launchDate}</p>
-                    <p><strong>Rocket:</strong> ${mission.rocket}</p>
-                    <p class="status"><strong>Status:</strong> ${mission.status}</p>
-                `;
+            card.innerHTML = `
+                <h2>${mission.name}</h2>
+                <span class="mission-type">${mission.type}</span>
+                <p><strong>Launch Date:</strong> ${mission.launchDate}</p>
+                <p><strong>Rocket:</strong> ${mission.rocket}</p>
+                <p class="status"><strong>Status:</strong> ${mission.status}</p>
+            `;
 
-                container.appendChild(card);
+            card.addEventListener("click", function () {
+                modalTitle.textContent = mission.name;
+                modalLaunch.textContent = mission.launchDate;
+                modalRocket.textContent = mission.rocket;
+                modalStatus.textContent = mission.status;
+                modalDescription.textContent = mission.description;
+
+                modal.classList.add("show");
             });
-        }
 
-        renderMissions(missions);
-
-        if (filter) {
-            filter.addEventListener("change", function () {
-                const selected = this.value;
-
-                if (selected === "all") {
-                    renderMissions(missions);
-                } else {
-                    const filtered = missions.filter(m => m.type === selected);
-                    renderMissions(filtered);
-                }
-            });
-        }
+            container.appendChild(card);
+        });
     }
+
+    if (container) {
+        renderMissions();
+    }
+
+    closeBtn.addEventListener("click", function () {
+        modal.classList.remove("show");
+    });
+
+    window.addEventListener("click", function (e) {
+        if (e.target === modal) {
+            modal.classList.remove("show");
+        }
+    });
 
 });
