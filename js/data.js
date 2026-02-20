@@ -6,7 +6,7 @@ const missionsData = [
         LaunchData: "14 July 2023",
         rocket: "LVM3",
         status: "Successful",
-        description: "India’s third lunar exploration mission that successfully achieved a soft landing near the Moon’s south pole.",
+        description: "Indias third lunar exploration mission that successfully achieved a soft landing near the Moons south pole.",
         timeline: [
             { event: "Launch", date: "14 July 2023" },
             { event: "Lunar Orbit Insertion", date: "5 August 2023" },
@@ -21,7 +21,7 @@ const missionsData = [
         launchDate: "5 November 2013",
         rocket: "PSLV-C25",
         status: "Completed",
-        description: "India’s first interplanetary mission that successfully reached Mars orbit on its first attempt.",
+        description: "Indias first interplanetary mission that successfully reached Mars orbit on its first attempt.",
         timeline: [
             { event: "Launch", date: "5 November 2013" },
             { event: "Earth Orbit Raising", date: "November 2013" },
