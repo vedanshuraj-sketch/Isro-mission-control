@@ -46,9 +46,15 @@ body {
 }
 
 @keyframes rocketShake {
-    from { transform: translateX(-1px); }
-    to { transform: translateX(1px); }
+    from {
+        transform: translateX(-1px);
+    }
+
+    to {
+        transform: translateX(1px);
+    }
 }
+
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -310,6 +316,7 @@ body::after {
     0% {
         transform: scale(1) translate(0px, 0px);
     }
+
     100% {
         transform: scale(1.1) translate(50px, -30px);
     }
@@ -342,9 +349,17 @@ body::after,
 }
 
 @keyframes twinkle {
-    0% { opacity: 0.3; }
-    50% { opacity: 1; }
-    100% { opacity: 0.4; }
+    0% {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.4;
+    }
 }
 
 .missions-section {
@@ -359,16 +374,23 @@ body::after,
 
 .missions-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 320px));
+    gap: 40px;
+    justify-content: center;
 }
 
 .mission-card {
     background: rgba(255, 255, 255, 0.05);
-    padding: 25px;
-    border-radius: 12px;
+    padding: 18px;
+    border-radius: 14px;
     backdrop-filter: blur(10px);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.missions-section .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .mission-card:hover {
@@ -382,11 +404,12 @@ body::after,
 
 .mission-type {
     display: inline-block;
-    font-size: 12px;
-    padding: 4px 10px;
+    font-size: 11px;
+    padding: 5px 12px;
     border-radius: 20px;
     background: #00d4ff;
     color: #000;
+    font-weight: 600;
     margin-bottom: 15px;
 }
 
@@ -421,7 +444,7 @@ body::after,
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease;
-    z-index: 10000;   
+    z-index: 10000;
 }
 
 .modal.show {
