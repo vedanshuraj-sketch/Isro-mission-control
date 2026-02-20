@@ -72,13 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
             `;
 
             card.addEventListener("click", function () {
-                modalTitle.textContent = mission.name;
-                modalLaunch.textContent = mission.launchDate;
-                modalRocket.textContent = mission.rocket;
-                modalStatus.textContent = mission.status;
-                modalDescription.textContent = mission.description;
-
-                modal.classList.add("show");
+                window.location.href = `mission.html?id=${mission.id}`;
             });
 
             container.appendChild(card);
