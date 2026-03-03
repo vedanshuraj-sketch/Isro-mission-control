@@ -12,6 +12,7 @@ function Navbar() {
           <li><Link to="/">Home</Link></li>
           <li><Link to="/missions">Missions</Link></li>
           <li><Link to="/rockets">Rockets</Link></li>
+          <li><Link to="/satellites">Satellites</Link></li>
         </ul>
       </nav>
     </header>

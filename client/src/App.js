@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Missions from "./pages/Missions";
 import Rockets from "./pages/Rockets";
 import "./styles/style.css";
+import Satellites from "./pages/Satellites";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/missions" element={<Missions />} />
         <Route path="/rockets" element={<Rockets />} />
+        <Route path="/satellites" element={<Satellites />} />
       </Routes>
     </Router>
   );
