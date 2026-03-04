@@ -6,6 +6,7 @@ import Rockets from "./pages/Rockets";
 import "./styles/style.css";
 import Satellites from "./pages/Satellites";
 import Scientists from "./pages/Scientists";
+import Astronauts from "./pages/Astronauts";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/rockets" element={<Rockets />} />
         <Route path="/satellites" element={<Satellites />} />
         <Route path="/scientists" element={<Scientists />} />
+        <Route path="/astronauts" element={<Astronauts />} />
       </Routes>
     </Router>
   );
