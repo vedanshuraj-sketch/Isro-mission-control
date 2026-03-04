@@ -33,6 +33,7 @@ function AstronautCard({ astronaut }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
+        
       {/* FRONT */}
       <div className={`sci-front ${hovered ? "faded" : ""}`}>
         <div className="sci-avatar">

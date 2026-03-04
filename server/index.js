@@ -5,6 +5,7 @@ const rocketsRouter = require("./routes/rockets");
 const satellitesRouter = require("./routes/satellites");
 const scientistsRouter = require("./routes/scientists");
 const astronautsRouter = require("./routes/astronauts");
+const launchSitesRouter = require("./routes/launch-sites");
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -13,6 +14,8 @@ app.use("/api/rockets", rocketsRouter);
 app.use("/api/satellites", satellitesRouter);
 app.use("/api/scientists", scientistsRouter);
 app.use("/api/astronauts", astronautsRouter);
+app.use("/api/launch-sites", launchSitesRouter);
+
 app.get("/", (req, res) => {
     res.send("ISRO Backend Running");
 });
