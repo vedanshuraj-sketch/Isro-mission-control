@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 
 const rocketImages = {
-  "PSLV":  "/images/pslv.jpg",
-  "GSLV":  "/images/gslv.jpg",
-  "LVM3":  "/images/gslv-mk3.webp",
-  "SSLV":  "/images/sslv.jpg",
+  "PSLV-XL": "/images/pslv-xl.avif",
+  "GSLV Mk-II": "/images/gslv-ii.jpg",
+  "GSLV Mk-III": "/images/gslv-mk3.webp",
+  "SSLV": "/images/sslv_1.jpg",
   "SLV-3": "/images/slv3.jpg",
 };
 
 const rocketSpecs = {
-  "PSLV":  { height: "44 m", stages: "4", firstFlight: "1994", successRate: "95%", description: "India's most reliable workhorse rocket. Used for Chandrayaan-1 and Mangalyaan." },
-  "GSLV":  { height: "49 m", stages: "3", firstFlight: "2001", successRate: "80%", description: "Designed to launch heavier communication satellites into GTO." },
-  "LVM3":  { height: "43.5 m", stages: "3", firstFlight: "2014", successRate: "100%", description: "ISRO's most powerful rocket. Launched Chandrayaan-2 and Chandrayaan-3." },
-  "SSLV":  { height: "34 m", stages: "3", firstFlight: "2022", successRate: "50%", description: "Small Satellite Launch Vehicle for rapid, low-cost launches into LEO." },
+  "PSLV-XL": { height: "44 m", stages: "4", firstFlight: "1994", successRate: "95%", description: "India's most reliable workhorse rocket. Used for Chandrayaan-1 and Mangalyaan." },
+  "GSLV Mk-II": { height: "49 m", stages: "3", firstFlight: "2001", successRate: "80%", description: "Designed to launch heavier communication satellites into GTO." },
+  "GSLV Mk-III": { height: "43.5 m", stages: "3", firstFlight: "2014", successRate: "100%", description: "ISRO's most powerful rocket. Launched Chandrayaan-2 and Chandrayaan-3." },
+  "SSLV": { height: "34 m", stages: "3", firstFlight: "2022", successRate: "50%", description: "Small Satellite Launch Vehicle for rapid, low-cost launches into LEO." },
   "SLV-3": { height: "22 m", stages: "4", firstFlight: "1979", successRate: "50%", description: "India's first experimental satellite launch vehicle." },
 };
 
@@ -23,8 +23,8 @@ const typeColor = (type) => {
 
 function RocketCard({ rocket }) {
   const [hovered, setHovered] = useState(false);
-  const specs = rocketSpecs[rocket.name] || {};
-  const imgSrc = rocketImages[rocket.name] || null;
+  const specs = rocketSpecs[rocket.rocket_name] || {};
+  const imgSrc = rocketImages[rocket.rocket_name] || null;
   const badgeColor = typeColor(rocket.type);
 
   return (
@@ -32,12 +32,13 @@ function RocketCard({ rocket }) {
 
       <div className={`rocket-card-front ${hovered ? "faded" : ""}`}>
         <div className="rocket-img-wrapper">
-          {imgSrc
-            ? <img src={imgSrc} alt={rocket.name} className="rocket-img" />
-            : <div className="rocket-img-placeholder">🚀</div>
-          }
+          {imgSrc && (
+            <img src={imgSrc} alt={rocket.rocket_name} className="rocket-bg-img" />
+          )}
+          <div className="rocket-overlay" />
         </div>
-        <h2 className="rocket-card-name">{rocket.rocket_name}</h2>
+        <div className={`rocket-card-front ${hovered ? "faded" : ""}`}></div>
+        <h2 className="rocket-card-name" style={{color: "#fff", textShadow:"0 2px 8px rgba(0,0,0,0.9)"}}>{rocket.rocket_name}</h2>
         <span className="mission-type" style={{ background: badgeColor }}>{rocket.type}</span>
         <div className="rocket-card-basic">
           <p><span className="label">Capacity</span><span className="value" style={{ color: badgeColor }}>{rocket.capacity_kg?.toLocaleString()} kg</span></p>
@@ -67,11 +68,21 @@ function Rockets() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/rockets")
-      .then(res => res.json())
-      .then(data => { setRockets(data); setTimeout(() => setIsLoading(false), 500); })
-      .catch(err => { console.error(err); setIsLoading(false); });
+    const fetchRockets = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/rockets");
+        const data = await res.json();
+        setRockets(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setTimeout(() => setIsLoading(false), 500);
+      }
+    };
+
+    fetchRockets();
   }, []);
+
 
   return (
     <>
@@ -99,8 +110,8 @@ function Rockets() {
           {rockets.length === 0 && !isLoading
             ? <p style={{ color: "#888", textAlign: "center" }}>No rockets found.</p>
             : <div className="rockets-grid">
-                {rockets.map(rocket => <RocketCard key={rocket.rocket_id} rocket={rocket} />)}
-              </div>
+              {rockets.map(rocket => <RocketCard key={rocket.rocket_id} rocket={rocket} />)}
+            </div>
           }
         </div>
       </section>
@@ -109,7 +120,18 @@ function Rockets() {
         .rockets-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 320px)); gap: 40px; justify-content: center; padding-bottom: 80px; }
         .rocket-card { position: relative; min-height: 420px; border-radius: 16px; background: rgba(255,255,255,0.04); backdrop-filter: blur(10px); border: 1px solid rgba(0,212,255,0.15); overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; }
         .rocket-card:hover { transform: translateY(-8px); box-shadow: 0 0 30px rgba(0,212,255,0.25); border-color: rgba(0,212,255,0.4); }
-        .rocket-card-front { padding: 24px; display: flex; flex-direction: column; align-items: center; text-align: center; transition: opacity 0.4s ease; }
+        .rocket-bg-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+        .rocket-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.92) 50%, rgba(0,0,0,0.4) 100%); z-index: 1; }
+        .rocket-card-front { 
+  position: absolute; 
+  inset: 0; 
+  padding: 24px; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: flex-start;  /* ← was flex-end */
+  z-index: 2; 
+  transition: opacity 0.4s ease; 
+}
         .rocket-card-front.faded { opacity: 0; pointer-events: none; }
         .rocket-img-wrapper { width: 120px; height: 180px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
         .rocket-img { max-width: 250px; max-height: 200px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(0,212,255,0.4)); }
