@@ -13,6 +13,7 @@ function Navbar() {
           <li><Link to="/missions">Missions</Link></li>
           <li><Link to="/rockets">Rockets</Link></li>
           <li><Link to="/satellites">Satellites</Link></li>
+          <li><Link to="/scientists">Scientists</Link></li>
         </ul>
       </nav>
     </header>

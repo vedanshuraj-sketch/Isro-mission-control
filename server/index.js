@@ -3,6 +3,7 @@ const cors = require("cors");
 const pool = require("./db");
 const rocketsRouter = require("./routes/rockets");
 const satellitesRouter = require("./routes/satellites");
+const scientistsRouter = require("./routes/scientists");
 
 const app = express();
 app.use(cors());
@@ -10,6 +11,7 @@ app.use(express.json());
 
 app.use("/api/rockets", rocketsRouter);
 app.use("/api/satellites", satellitesRouter);
+app.use("/api/scientists", scientistsRouter);
 
 app.get("/", (req, res) => {
     res.send("ISRO Backend Running");
