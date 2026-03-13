@@ -1,0 +1,31 @@
+[33m6a8fd69[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{0}: rebase (abort): returning to refs/heads/main
+[33m6a8fd69[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{1}: rebase (abort): returning to refs/heads/main
+[33m8d288a3[m HEAD@{2}: filter-branch: rewrite
+[33m1195421[m HEAD@{3}: commit: fix: remove video file again from tracking
+[33mda4f8c5[m HEAD@{4}: commit: fix: remove unused Link import from Footer
+[33ma8b1325[m HEAD@{5}: commit: update api urls to production backend
+[33mf4a2023[m HEAD@{6}: commit: fix: add SSL support for Neon database
+[33md98bcd5[m HEAD@{7}: filter-branch: rewrite
+[33ma26d85a[m HEAD@{8}: commit: feat: add auth system, CRUD on all pages, admin dashboard
+[33m66810a4[m HEAD@{9}: commit: feat: add auth system, crud on all pages, admin dasboard
+[33m2028ff3[m HEAD@{10}: commit: add launch sites page with map embed and info tabs
+[33m3a7d282[m HEAD@{11}: commit: feat: add Astronauts page with crew bio cards
+[33m162c530[m HEAD@{12}: commit: Add: added scientist page and info cards
+[33m3be6085[m HEAD@{13}: commit: add satellites page with orbit filter
+[33mbed4820[m HEAD@{14}: commit: make: rocket page and add rocket cards in it
+[33ma643f64[m HEAD@{15}: commit (merge): feat: merge Rockets page into main
+[33m6a8fd69[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{16}: checkout: moving from 59f2cec2a43b58fe28140184efd00d278f612cd5 to main
+[33m59f2cec[m HEAD@{17}: commit: feat: add Rocket page in project
+[33m26f73fe[m HEAD@{18}: pull origin main --rebase (start): checkout 26f73fe9a4173d07612b779b58c401a2e10d2a9e
+[33m6a8fd69[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{19}: commit: Migrate project to full-stack React + Express + PostgreSQL architecture
+[33m124808d[m HEAD@{20}: reset: moving to HEAD
+[33m124808d[m HEAD@{21}: commit: add dynamic mission details page with animated timeline
+[33m5daef3b[m HEAD@{22}: commit: implement mission page routing using URL parameters
+[33m86c1afc[m HEAD@{23}: commit: added centralized mission data file
+[33m01307e0[m HEAD@{24}: commit: added dynamic mission page structure
+[33mfd149e2[m HEAD@{25}: commit: Add mission details modal with dynamic content
+[33mfd8870f[m HEAD@{26}: commit: Add mission filtering functionality
+[33m7b446d4[m HEAD@{27}: commit: Implement dynamic mission card rendering using Javascript
+[33mc16a357[m HEAD@{28}: commit: Fix project structure and organize files correctly
+[33m6df2bff[m HEAD@{29}: Branch: renamed refs/heads/main to refs/heads/main
+[33m6df2bff[m HEAD@{31}: commit (initial): Initial project setup with folder structure
