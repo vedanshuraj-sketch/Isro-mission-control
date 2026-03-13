@@ -81,7 +81,7 @@ function Missions() {
   const canEdit = auth && (auth.permissions === "all" || auth.permissions === "missions");
 
   const fetchMissions = () => {
-    fetch("http://localhost:5000/api/missions")
+    fetch("https://isro-backend-6tlj.onrender.com/api/missions")
       .then(res => res.json())
       .then(data => { setMissions(data); setTimeout(() => setIsLoading(false), 500); })
       .catch(err => { console.error(err); setIsLoading(false); });
@@ -98,7 +98,7 @@ function Missions() {
   const handleDelete = async (e, id) => {
     e.stopPropagation();
     if (!window.confirm("Delete this mission?")) return;
-    await fetch(`http://localhost:5000/api/missions/${id}`, { method: "DELETE" });
+    await fetch(`https://isro-backend-6tlj.onrender.com/api/missions/${id}`, { method: "DELETE" });
     fetchMissions();
   };
 
@@ -106,8 +106,8 @@ function Missions() {
     setSaving(true);
     const isEdit = !!editTarget?.mission_id;
     const url = isEdit
-      ? `http://localhost:5000/api/missions/${editTarget.mission_id}`
-      : "http://localhost:5000/api/missions";
+      ? `https://isro-backend-6tlj.onrender.com/api/missions/${editTarget.mission_id}`
+      : "https://isro-backend-6tlj.onrender.com/api/missions";
 
     await fetch(url, {
       method: isEdit ? "PUT" : "POST",

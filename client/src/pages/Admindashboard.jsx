@@ -42,12 +42,12 @@ function AdminDashboard() {
     const fetchAll = async () => {
       try {
         const [logsRes, missionsRes, rocketsRes, satellitesRes, scientistsRes, astronautsRes] = await Promise.all([
-          fetch("http://localhost:5000/api/auth/logs"),
-          fetch("http://localhost:5000/api/missions"),
-          fetch("http://localhost:5000/api/rockets"),
-          fetch("http://localhost:5000/api/satellites"),
-          fetch("http://localhost:5000/api/scientists"),
-          fetch("http://localhost:5000/api/astronauts"),
+          fetch("https://isro-backend-6tlj.onrender.com/api/auth/logs"),
+          fetch("https://isro-backend-6tlj.onrender.com/api/missions"),
+          fetch("https://isro-backend-6tlj.onrender.com/api/rockets"),
+          fetch("https://isro-backend-6tlj.onrender.com/api/satellites"),
+          fetch("https://isro-backend-6tlj.onrender.com/api/scientists"),
+          fetch("https://isro-backend-6tlj.onrender.com/api/astronauts"),
         ]);
 
         const [logsData, missions, rockets, satellites, scientists, astronauts] = await Promise.all([

@@ -162,7 +162,7 @@ function Astronauts() {
   const canEdit = auth && (auth.permissions === "all" || auth.permissions === "astronauts");
 
   const fetchAstronauts = () => {
-    fetch("http://localhost:5000/api/astronauts")
+    fetch("https://isro-backend-6tlj.onrender.com/api/astronauts")
       .then(res => res.json())
       .then(data => { setAstronauts(data); setTimeout(() => setIsLoading(false), 500); })
       .catch(err => { console.error(err); setIsLoading(false); });
@@ -175,7 +175,7 @@ function Astronauts() {
 
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this astronaut?")) return;
-    await fetch(`http://localhost:5000/api/astronauts/${id}`, { method: "DELETE" });
+    await fetch(`https://isro-backend-6tlj.onrender.com/api/astronauts/${id}`, { method: "DELETE" });
     fetchAstronauts();
   };
 
@@ -183,8 +183,8 @@ function Astronauts() {
     setSaving(true);
     const isEdit = !!editTarget?.astronaut_id;
     const url = isEdit
-      ? `http://localhost:5000/api/astronauts/${editTarget.astronaut_id}`
-      : "http://localhost:5000/api/astronauts";
+      ? `https://isro-backend-6tlj.onrender.com/api/astronauts/${editTarget.astronaut_id}`
+      : "https://isro-backend-6tlj.onrender.com/api/astronauts";
     await fetch(url, {
       method: isEdit ? "PUT" : "POST",
       headers: { "Content-Type": "application/json" },

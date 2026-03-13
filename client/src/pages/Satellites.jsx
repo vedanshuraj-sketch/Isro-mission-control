@@ -161,7 +161,7 @@ function Satellites() {
   const filtered = filter === "All" ? satellites : satellites.filter(s => s.orbit_type === filter);
 
   const fetchSatellites = () => {
-    fetch("http://localhost:5000/api/satellites")
+    fetch("https://isro-backend-6tlj.onrender.com/api/satellites")
       .then(res => res.json())
       .then(data => { setSatellites(data); setTimeout(() => setIsLoading(false), 500); })
       .catch(err => { console.error(err); setIsLoading(false); });
@@ -174,7 +174,7 @@ function Satellites() {
 
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this satellite?")) return;
-    await fetch(`http://localhost:5000/api/satellites/${id}`, { method: "DELETE" });
+    await fetch(`https://isro-backend-6tlj.onrender.com/api/satellites/${id}`, { method: "DELETE" });
     fetchSatellites();
   };
 
@@ -182,8 +182,8 @@ function Satellites() {
     setSaving(true);
     const isEdit = !!editTarget?.satellite_id;
     const url = isEdit
-      ? `http://localhost:5000/api/satellites/${editTarget.satellite_id}`
-      : "http://localhost:5000/api/satellites";
+      ? `https://isro-backend-6tlj.onrender.com/api/satellites/${editTarget.satellite_id}`
+      : "https://isro-backend-6tlj.onrender.com/api/satellites";
     await fetch(url, {
       method: isEdit ? "PUT" : "POST",
       headers: { "Content-Type": "application/json" },

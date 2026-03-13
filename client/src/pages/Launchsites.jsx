@@ -121,7 +121,7 @@ function LaunchSites() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/launch-sites")
+    fetch("https://isro-backend-6tlj.onrender.com/api/launch-sites")
       .then(res => res.json())
       .then(data => {
         setSites(data);

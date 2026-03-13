@@ -179,7 +179,7 @@ function Scientists() {
   const canEdit = auth && (auth.permissions === "all" || auth.permissions === "scientists");
 
   const fetchScientists = () => {
-    fetch("http://localhost:5000/api/scientists")
+    fetch("https://isro-backend-6tlj.onrender.com/api/scientists")
       .then(res => res.json())
       .then(data => { setScientists(data); setIsLoading(false); })
       .catch(err => { console.error(err); setIsLoading(false); });
@@ -192,7 +192,7 @@ function Scientists() {
 
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this scientist?")) return;
-    await fetch(`http://localhost:5000/api/scientists/${id}`, { method: "DELETE" });
+    await fetch(`https://isro-backend-6tlj.onrender.com/api/scientists/${id}`, { method: "DELETE" });
     fetchScientists();
   };
 
@@ -200,8 +200,8 @@ function Scientists() {
     setSaving(true);
     const isEdit = !!editTarget?.scientist_id;
     const url = isEdit
-      ? `http://localhost:5000/api/scientists/${editTarget.scientist_id}`
-      : "http://localhost:5000/api/scientists";
+      ? `https://isro-backend-6tlj.onrender.com/api/scientists/${editTarget.scientist_id}`
+      : "https://isro-backend-6tlj.onrender.com/api/scientists";
 
     await fetch(url, {
       method: isEdit ? "PUT" : "POST",

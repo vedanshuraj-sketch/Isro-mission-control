@@ -157,7 +157,7 @@ function Rockets() {
 
   const fetchRockets = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/rockets");
+      const res = await fetch("https://isro-backend-6tlj.onrender.com/api/rockets");
       const data = await res.json();
       setRockets(data);
     } catch (err) {
@@ -174,7 +174,7 @@ function Rockets() {
 
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this rocket?")) return;
-    await fetch(`http://localhost:5000/api/rockets/${id}`, { method: "DELETE" });
+    await fetch(`https://isro-backend-6tlj.onrender.com/api/rockets/${id}`, { method: "DELETE" });
     fetchRockets();
   };
 
@@ -182,8 +182,8 @@ function Rockets() {
     setSaving(true);
     const isEdit = !!editTarget?.rocket_id;
     const url = isEdit
-      ? `http://localhost:5000/api/rockets/${editTarget.rocket_id}`
-      : "http://localhost:5000/api/rockets";
+      ? `https://isro-backend-6tlj.onrender.com/api/rockets/${editTarget.rocket_id}`
+      : "https://isro-backend-6tlj.onrender.com/api/rockets";
     await fetch(url, {
       method: isEdit ? "PUT" : "POST",
       headers: { "Content-Type": "application/json" },
