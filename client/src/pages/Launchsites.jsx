@@ -24,7 +24,7 @@ const siteInfo = {
 };
 
 function LaunchSiteCard({ site }) {
-  const [tab, setTab] = useState("info"); // "info" or "map"
+  const [tab, setTab] = useState("info"); 
   const imgSrc = siteImages[site.site_name] || null;
   const coords = siteCoordinates[site.site_name];
   const info = siteInfo[site.site_name] || {};
