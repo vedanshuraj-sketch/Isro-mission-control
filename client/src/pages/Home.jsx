@@ -201,13 +201,20 @@ function Home() {
           <p style={{ color: "#00d4ff", letterSpacing: "6px", fontSize: "0.75rem", marginBottom: "24px", fontWeight: "bold" }}>
             🇮🇳 INDIAN SPACE RESEARCH ORGANISATION
           </p>
-          <h1 style={{
-            fontSize: "clamp(2.5rem, 6vw, 5rem)", fontWeight: "bold",
-            color: "#fff", marginBottom: "12px", letterSpacing: "4px",
-            textShadow: "0 0 60px rgba(0,212,255,0.3)", lineHeight: 1.1,
-          }}>
-            ISRO MISSION CONTROL
-          </h1>
+         <h1 style={{
+  fontSize: "clamp(1.8rem, 4vw, 3rem)",
+  fontWeight: "bold",
+  color: "#fff", marginBottom: "8px", letterSpacing: "4px",
+  textShadow: "0 0 60px rgba(0,212,255,0.3)", lineHeight: 1.1,
+}}>
+  "सुस्वागतम् मिशन नियन्त्रणम्"
+</h1>
+<p style={{
+  color: "#00d4ff", fontSize: "0.75rem",
+  letterSpacing: "4px", marginBottom: "24px", fontWeight: "bold",
+}}>
+  ISRO MISSION CONTROL
+</p>
           <p style={{
             fontSize: "clamp(0.9rem, 2vw, 1.1rem)", color: "#cccccc",
             marginBottom: "40px", letterSpacing: "1px", lineHeight: 1.8,
