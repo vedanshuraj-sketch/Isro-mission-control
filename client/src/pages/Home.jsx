@@ -12,7 +12,7 @@ function useInView(threshold = 0.2) {
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
-  }, [threshold]);  // ← add threshold here
+  }, [threshold]);
   return [ref, visible];
 }
 
@@ -102,6 +102,7 @@ function Home() {
         justifyContent: "center", padding: "0 6%",
         position: "relative", overflow: "hidden",
       }}>
+        {/* Grid parallax */}
         <div style={{
           position: "absolute", inset: 0,
           backgroundImage: "linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px)",
@@ -109,57 +110,110 @@ function Home() {
           transform: `translateY(${scrollY * 0.3}px)`,
           pointerEvents: "none",
         }} />
-        <div style={{
-          position: "absolute", right: "-10%", top: "20%",
-          width: "600px", height: "600px",
-          background: "radial-gradient(circle, rgba(0,212,255,0.08) 0%, transparent 70%)",
-          transform: `translateY(${scrollY * -0.2}px)`,
-          pointerEvents: "none",
-        }} />
 
-        <div style={{
-          position: "relative", zIndex: 1, maxWidth: "1000px",
-          opacity: heroVisible ? 1 : 0,
-          transform: heroVisible ? "translateY(0)" : "translateY(60px)",
-          transition: "opacity 1.2s ease, transform 1.2s ease",
+        {/* Two column layout */}
+        <div className="hero-two-col" style={{
+          position: "relative", zIndex: 1,
+          display: "flex", alignItems: "center",
+          justifyContent: "space-between",
+          gap: "60px", width: "100%",
         }}>
-          <p style={{ color: "#00d4ff", letterSpacing: "6px", fontSize: "0.7rem", marginBottom: "32px", fontFamily: "monospace" }}>
-            🇮🇳 INDIAN SPACE RESEARCH ORGANISATION — EST. 1969
-          </p>
-          <h1 style={{ fontSize: "clamp(2.5rem, 8vw, 7rem)", fontWeight: "900", lineHeight: 1, marginBottom: "16px", letterSpacing: "-1px", color: "#fff" }}>
-            <span style={{ display: "block" }}>MISSION</span>
-            <span style={{ display: "block", WebkitTextStroke: "2px rgba(255,255,255,0.3)", color: "transparent" }}>CONTROL</span>
-          </h1>
-          <p style={{ fontSize: "clamp(1rem, 2vw, 1.4rem)", color: "rgba(0,212,255,0.9)", fontStyle: "italic", letterSpacing: "2px", marginBottom: "8px" }}>
-            "सुस्वागतम् मिशन नियन्त्रणम्"
-          </p>
-          <p style={{ color: "#555", fontSize: "0.7rem", letterSpacing: "4px", marginBottom: "48px" }}>
-            A WARM WELCOME TO MISSION CONTROL
-          </p>
-          <p style={{ fontSize: "clamp(0.9rem, 1.5vw, 1.1rem)", color: "#888", maxWidth: "500px", lineHeight: "1.9", marginBottom: "56px" }}>
-            Advanced telemetry, satellite tracking, and orbital database management system for ISRO's space missions.
-          </p>
-          <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-            <Link to="/missions" style={{
-              padding: "16px 44px", background: "#00d4ff", color: "#000",
-              textDecoration: "none", letterSpacing: "3px", fontSize: "0.78rem",
-              fontWeight: "900", fontFamily: "monospace", transition: "all 0.3s ease", display: "inline-block",
-            }}
-              onMouseEnter={e => { e.currentTarget.style.background = "#fff"; e.currentTarget.style.transform = "translateY(-3px)"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = "#00d4ff"; e.currentTarget.style.transform = "translateY(0)"; }}
-            >EXPLORE MISSIONS →</Link>
-            <Link to="/access" style={{
-              padding: "16px 44px", background: "transparent", color: "#fff",
-              textDecoration: "none", letterSpacing: "3px", fontSize: "0.78rem",
-              fontWeight: "900", fontFamily: "monospace",
-              border: "1px solid rgba(255,255,255,0.2)", transition: "all 0.3s ease", display: "inline-block",
-            }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = "#fff"; e.currentTarget.style.transform = "translateY(-3px)"; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)"; e.currentTarget.style.transform = "translateY(0)"; }}
-            >ACCESS PORTAL</Link>
+
+          {/* LEFT — text */}
+          <div style={{
+            flex: "1", maxWidth: "550px",
+            opacity: heroVisible ? 1 : 0,
+            transform: heroVisible ? "translateY(0)" : "translateY(60px)",
+            transition: "opacity 1.2s ease, transform 1.2s ease",
+          }}>
+            <p style={{ color: "#00d4ff", letterSpacing: "6px", fontSize: "0.7rem", marginBottom: "32px", fontFamily: "monospace" }}>
+              🇮🇳 INDIAN SPACE RESEARCH ORGANISATION — EST. 1969
+            </p>
+            <h1 style={{ fontSize: "clamp(2.5rem, 6vw, 6rem)", fontWeight: "900", lineHeight: 1, marginBottom: "16px", letterSpacing: "-1px", color: "#fff" }}>
+              <span style={{ display: "block" }}>MISSION</span>
+              <span style={{ display: "block", WebkitTextStroke: "2px rgba(255,255,255,0.3)", color: "transparent" }}>CONTROL</span>
+            </h1>
+            <p style={{ fontSize: "clamp(1rem, 2vw, 1.3rem)", color: "rgba(0,212,255,0.9)", fontStyle: "italic", letterSpacing: "2px", marginBottom: "8px" }}>
+              "सुस्वागतम् मिशन नियन्त्रणम्"
+            </p>
+            <p style={{ color: "#555", fontSize: "0.7rem", letterSpacing: "4px", marginBottom: "40px" }}>
+              A WARM WELCOME TO MISSION CONTROL
+            </p>
+            <p style={{ fontSize: "clamp(0.9rem, 1.5vw, 1rem)", color: "#888", lineHeight: "1.9", marginBottom: "48px" }}>
+              Advanced telemetry, satellite tracking, and orbital database management system for ISRO's space missions.
+            </p>
+            <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+              <Link to="/missions" style={{
+                padding: "16px 44px", background: "#00d4ff", color: "#000",
+                textDecoration: "none", letterSpacing: "3px", fontSize: "0.78rem",
+                fontWeight: "900", fontFamily: "monospace", transition: "all 0.3s ease", display: "inline-block",
+              }}
+                onMouseEnter={e => { e.currentTarget.style.background = "#fff"; e.currentTarget.style.transform = "translateY(-3px)"; }}
+                onMouseLeave={e => { e.currentTarget.style.background = "#00d4ff"; e.currentTarget.style.transform = "translateY(0)"; }}
+              >EXPLORE MISSIONS →</Link>
+              <Link to="/access" style={{
+                padding: "16px 44px", background: "transparent", color: "#fff",
+                textDecoration: "none", letterSpacing: "3px", fontSize: "0.78rem",
+                fontWeight: "900", fontFamily: "monospace",
+                border: "1px solid rgba(255,255,255,0.2)", transition: "all 0.3s ease", display: "inline-block",
+              }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = "#fff"; e.currentTarget.style.transform = "translateY(-3px)"; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)"; e.currentTarget.style.transform = "translateY(0)"; }}
+              >ACCESS PORTAL</Link>
+            </div>
+          </div>
+
+          {/* RIGHT — rocket image */}
+          <div style={{
+            flex: "1", maxWidth: "580px",
+            opacity: heroVisible ? 1 : 0,
+            transform: heroVisible ? "translateY(0)" : "translateY(40px)",
+            transition: "opacity 1.5s ease 0.3s, transform 1.5s ease 0.3s",
+            position: "relative",
+          }}>
+            {/* Glow behind image */}
+            <div style={{
+              position: "absolute", inset: "-30px",
+              background: "radial-gradient(ellipse at center, rgba(0,212,255,0.12) 0%, transparent 70%)",
+              pointerEvents: "none",
+            }} />
+            {/* Corner decorations */}
+            <div style={{ position: "absolute", top: "-8px", left: "-8px", width: "24px", height: "24px", borderTop: "2px solid #00d4ff", borderLeft: "2px solid #00d4ff", zIndex: 2 }} />
+            <div style={{ position: "absolute", top: "-8px", right: "-8px", width: "24px", height: "24px", borderTop: "2px solid #00d4ff", borderRight: "2px solid #00d4ff", zIndex: 2 }} />
+            <div style={{ position: "absolute", bottom: "-8px", left: "-8px", width: "24px", height: "24px", borderBottom: "2px solid #00d4ff", borderLeft: "2px solid #00d4ff", zIndex: 2 }} />
+            <div style={{ position: "absolute", bottom: "-8px", right: "-8px", width: "24px", height: "24px", borderBottom: "2px solid #00d4ff", borderRight: "2px solid #00d4ff", zIndex: 2 }} />
+
+            {/* Image */}
+            <div style={{
+              border: "1px solid rgba(0,212,255,0.15)",
+              borderRadius: "4px", overflow: "hidden",
+              boxShadow: "0 0 80px rgba(0,212,255,0.08), 0 40px 80px rgba(0,0,0,0.5)",
+            }}>
+              <img
+                src="/images/rocket-hero.webp"
+                alt="ISRO Rocket at Launch Pad"
+                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", filter: "brightness(0.85) contrast(1.1) saturate(0.9)" }}
+              />
+              {/* Overlay gradient */}
+              <div style={{
+                position: "absolute", inset: 0,
+                background: "linear-gradient(to right, rgba(0,8,20,0.3) 0%, transparent 40%), linear-gradient(to top, rgba(0,8,20,0.7) 0%, transparent 40%)",
+              }} />
+              {/* Caption */}
+              <div style={{ position: "absolute", bottom: "20px", left: "20px", zIndex: 3 }}>
+                <p style={{ color: "#00d4ff", fontSize: "0.6rem", letterSpacing: "3px", fontFamily: "monospace", marginBottom: "4px" }}>▶ GSLV MK-III</p>
+                <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.55rem", letterSpacing: "2px", fontFamily: "monospace" }}>SATISH DHAWAN SPACE CENTRE, SRIHARIKOTA</p>
+              </div>
+              {/* Live indicator */}
+              <div style={{ position: "absolute", top: "16px", right: "16px", display: "flex", alignItems: "center", gap: "6px", zIndex: 3 }}>
+                <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#22c55e", boxShadow: "0 0 8px #22c55e", animation: "pulse 2s infinite" }} />
+                <span style={{ color: "#22c55e", fontSize: "0.55rem", letterSpacing: "2px", fontFamily: "monospace" }}>LAUNCH READY</span>
+              </div>
+            </div>
           </div>
         </div>
 
+        {/* Scroll indicator */}
         <div style={{ position: "absolute", bottom: "40px", left: "6%", display: "flex", alignItems: "center", gap: "12px", opacity: 0.4 }}>
           <div style={{ width: "40px", height: "1px", background: "#fff" }} />
           <p style={{ fontSize: "0.65rem", letterSpacing: "4px", color: "#fff" }}>SCROLL</p>
@@ -323,7 +377,12 @@ function Home() {
       <Footer />
 
       <style>{`
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.3; }
+        }
         @media (max-width: 768px) {
+          .hero-two-col { flex-direction: column !important; }
           section { padding-left: 5% !important; padding-right: 5% !important; }
         }
       `}</style>
