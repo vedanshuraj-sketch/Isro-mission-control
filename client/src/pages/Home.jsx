@@ -12,7 +12,7 @@ function useInView(threshold = 0.2) {
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
-  }, []);
+  }, [threshold]);  // ← add threshold here
   return [ref, visible];
 }
 
