@@ -2,279 +2,331 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Footer from "./Footer";
 
-const sections = [
-  {
-    id: "missions",
-    title: "MISSIONS",
-    subtitle: "17 MISSIONS LAUNCHED",
-    description: "From Aryabhata in 1975 to Chandrayaan-3 in 2023. Every mission that took India to the stars.",
-    link: "/missions",
-    linkText: "EXPLORE MISSIONS",
-    bg: "radial-gradient(ellipse at bottom left, #0d1b2a 0%, #000814 100%)",
-    accent: "#00d4ff",
-  },
-  {
-    id: "rockets",
-    title: "LAUNCH VEHICLES",
-    subtitle: "POWERING INDIA TO ORBIT",
-    description: "PSLV, GSLV, LVM3, SSLV — the rockets that carry India's dreams beyond Earth.",
-    link: "/rockets",
-    linkText: "VIEW ROCKETS",
-    bg: "radial-gradient(ellipse at top right, #1a0d00 0%, #000814 100%)",
-    accent: "#f97316",
-  },
-  {
-    id: "satellites",
-    title: "SATELLITES",
-    subtitle: "ORBITING THE EARTH AND BEYOND",
-    description: "17 satellites in LEO, GEO, Lunar and Mars orbits. India's eyes in the sky.",
-    link: "/satellites",
-    linkText: "VIEW SATELLITES",
-    bg: "radial-gradient(ellipse at center, #0d0a1a 0%, #000814 100%)",
-    accent: "#a855f7",
-  },
-  {
-    id: "scientists",
-    title: "THE SCIENTISTS",
-    subtitle: "MINDS BEHIND THE MISSIONS",
-    description: "Vikram Sarabhai, APJ Abdul Kalam, K. Sivan, S. Somnath — the visionaries who built India's space legacy.",
-    link: "/scientists",
-    linkText: "MEET THE TEAM",
-    bg: "radial-gradient(ellipse at bottom, #0a1a0d 0%, #000814 100%)",
-    accent: "#22c55e",
-  },
-  {
-    id: "astronauts",
-    title: "THE CREW",
-    subtitle: "INDIA'S HEROES OF SPACE",
-    description: "Rakesh Sharma, Kalpana Chawla, Sunita Williams — those who dared to leave Earth behind.",
-    link: "/astronauts",
-    linkText: "MEET THE CREW",
-    bg: "radial-gradient(ellipse at top, #1a1a00 0%, #000814 100%)",
-    accent: "#facc15",
-  },
-  {
-    id: "launchsites",
-    title: "LAUNCH SITES",
-    subtitle: "WHERE IT ALL BEGINS",
-    description: "Satish Dhawan Space Centre and Thumba Equatorial Launch Station — the birthplaces of India's space missions.",
-    link: "/launch-sites",
-    linkText: "EXPLORE SITES",
-    bg: "radial-gradient(ellipse at center right, #1a0014 0%, #000814 100%)",
-    accent: "#ec4899",
-  },
-];
-
-function ScrollSection({ section, index }) {
+function useInView(threshold = 0.2) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
-
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.3 }
+      { threshold }
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
   }, []);
+  return [ref, visible];
+}
 
+function MarqueeRow({ items, direction = 1, speed = 30 }) {
+  const [offset, setOffset] = useState(0);
+  useEffect(() => {
+    let frame;
+    let last = null;
+    const animate = (ts) => {
+      if (last !== null) setOffset(o => (o + direction * (ts - last) / 1000 * speed) % 100);
+      last = ts;
+      frame = requestAnimationFrame(animate);
+    };
+    frame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frame);
+  }, [direction, speed]);
+
+  const repeated = [...items, ...items, ...items];
   return (
-    <section ref={ref} style={{
-      height: "100vh",
-      display: "flex", flexDirection: "column",
-      justifyContent: "center", alignItems: "center",
-      textAlign: "center", padding: "0 10%",
-      background: section.bg,
-      position: "relative", overflow: "hidden",
-    }}>
-      {/* Grid overlay */}
-      <div style={{
-        position: "absolute", inset: 0,
-        backgroundImage: "linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)",
-        backgroundSize: "60px 60px", pointerEvents: "none",
-      }} />
-
-      {/* Accent glow */}
-      <div style={{
-        position: "absolute", inset: 0,
-        background: `radial-gradient(ellipse at center, ${section.accent}11 0%, transparent 70%)`,
-        pointerEvents: "none",
-      }} />
-
-      <div style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(50px)",
-        transition: "opacity 1s ease, transform 1s ease",
-        position: "relative", zIndex: 1, maxWidth: "800px",
-      }}>
-        <p style={{ color: section.accent, letterSpacing: "5px", fontSize: "0.75rem", marginBottom: "20px", fontWeight: "bold" }}>
-          {section.subtitle}
-        </p>
-        <h1 style={{
-          fontSize: "3.5rem", fontWeight: "bold", color: "#fff",
-          marginBottom: "24px", letterSpacing: "3px",
-          textShadow: `0 0 40px ${section.accent}44`, lineHeight: 1.1,
-        }}>
-          {section.title}
-        </h1>
-        <p style={{ fontSize: "1rem", color: "#aaa", maxWidth: "600px", margin: "0 auto 40px", lineHeight: "1.8" }}>
-          {section.description}
-        </p>
-        <Link to={section.link} style={{
-          display: "inline-block", padding: "14px 36px",
-          border: `1px solid ${section.accent}`,
-          color: section.accent, textDecoration: "none",
-          letterSpacing: "3px", fontSize: "0.8rem",
-          fontWeight: "bold", fontFamily: "monospace",
-          background: `${section.accent}11`, transition: "all 0.3s ease",
-        }}
-          onMouseEnter={e => { e.currentTarget.style.background = `${section.accent}33`; e.currentTarget.style.boxShadow = `0 0 20px ${section.accent}44`; }}
-          onMouseLeave={e => { e.currentTarget.style.background = `${section.accent}11`; e.currentTarget.style.boxShadow = "none"; }}
-        >
-          {section.linkText}
-        </Link>
+    <div style={{ overflow: "hidden", whiteSpace: "nowrap" }}>
+      <div style={{ display: "inline-block", transform: `translateX(-${offset}%)`, transition: "none" }}>
+        {repeated.map((item, i) => (
+          <span key={i} style={{
+            display: "inline-block", padding: "0 40px",
+            fontSize: "clamp(1.2rem, 3vw, 2rem)",
+            fontWeight: "bold", letterSpacing: "4px",
+            color: item.color || "rgba(255,255,255,0.15)",
+            fontFamily: "monospace",
+          }}>
+            {item.text} <span style={{ color: "#00d4ff", opacity: 0.4 }}>✦</span>
+          </span>
+        ))}
       </div>
-
-      {/* Section number */}
-      <p style={{
-        position: "absolute", bottom: "30px", right: "5%",
-        color: "rgba(255,255,255,0.06)", fontSize: "6rem",
-        fontWeight: "bold", lineHeight: 1, userSelect: "none",
-      }}>
-        {String(index).padStart(2, "0")}
-      </p>
-    </section>
+    </div>
   );
 }
 
+const missions = [
+  { name: "Chandrayaan-3", type: "Lunar", year: "2023", status: "SUCCESS", color: "#00d4ff" },
+  { name: "Aditya-L1", type: "Solar", year: "2023", status: "ACTIVE", color: "#facc15" },
+  { name: "Mangalyaan", type: "Mars", year: "2013", status: "COMPLETED", color: "#f97316" },
+  { name: "Chandrayaan-1", type: "Lunar", year: "2008", status: "COMPLETED", color: "#a855f7" },
+  { name: "Astrosat", type: "Astronomy", year: "2015", status: "ACTIVE", color: "#22c55e" },
+  { name: "GSAT-19", type: "Communication", year: "2017", status: "COMPLETED", color: "#ec4899" },
+];
+
+const stats = [
+  { value: "17+", label: "MISSIONS" },
+  { value: "4", label: "ROCKETS" },
+  { value: "17", label: "SATELLITES" },
+  { value: "1969", label: "EST." },
+];
+
 function Home() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [heroVisible, setHeroVisible] = useState(false);
+  const [heroRef, heroVisible] = useInView(0.1);
+  const [statsRef, statsVisible] = useInView(0.2);
+  const [missionsRef, missionsVisible] = useInView(0.1);
+  const [quoteRef, quoteVisible] = useInView(0.3);
+  const [ctaRef, ctaVisible] = useInView(0.3);
+  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-      setTimeout(() => setHeroVisible(true), 200);
-    }, 1000);
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const marqueeItems1 = [
+    { text: "MISSIONS" }, { text: "ROCKETS" }, { text: "SATELLITES" },
+    { text: "SCIENTISTS" }, { text: "ASTRONAUTS" }, { text: "LAUNCH SITES" },
+  ];
+  const marqueeItems2 = [
+    { text: "CHANDRAYAAN", color: "rgba(0,212,255,0.2)" },
+    { text: "MANGALYAAN", color: "rgba(249,115,22,0.2)" },
+    { text: "ADITYA-L1", color: "rgba(250,204,21,0.2)" },
+    { text: "ASTROSAT", color: "rgba(34,197,94,0.2)" },
+  ];
+
   return (
-    <div>
+    <div style={{ background: "#000814", minHeight: "100vh", overflowX: "hidden" }}>
       <div className="twinkle-layer"></div>
       <div className="nebula"></div>
 
-      {/* Loader */}
-      <div className={`loader ${!isLoading ? "hidden" : ""}`}>
-        <div className="rocket-container">
-          <div className="rocket"></div>
-          <p style={{ color: "#00d4ff", marginTop: "15px", letterSpacing: "2px", fontWeight: "bold" }}>
-            ESTABLISHING COMM LINK...
-          </p>
-        </div>
-      </div>
-
-      {/* HERO — full screen video */}
-      <section style={{ position: "relative", height: "100vh", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
-
-        {/* Video background */}
-        <video
-          autoPlay muted loop playsInline
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", zIndex: 0 }}
-        >
-          <source src="/videos/hero.mp4" type="video/mp4" />
-        </video>
-
-        {/* Dark overlay */}
+      {/* HERO */}
+      <section ref={heroRef} style={{
+        minHeight: "100vh", display: "flex", flexDirection: "column",
+        justifyContent: "center", padding: "0 6%",
+        position: "relative", overflow: "hidden",
+      }}>
         <div style={{
-          position: "absolute", inset: 0, zIndex: 1,
-          background: "linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 60%, rgba(0,8,20,1) 100%)",
+          position: "absolute", inset: 0,
+          backgroundImage: "linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px)",
+          backgroundSize: "80px 80px",
+          transform: `translateY(${scrollY * 0.3}px)`,
+          pointerEvents: "none",
+        }} />
+        <div style={{
+          position: "absolute", right: "-10%", top: "20%",
+          width: "600px", height: "600px",
+          background: "radial-gradient(circle, rgba(0,212,255,0.08) 0%, transparent 70%)",
+          transform: `translateY(${scrollY * -0.2}px)`,
+          pointerEvents: "none",
         }} />
 
-        {/* Hero content */}
         <div style={{
-          position: "relative", zIndex: 2, textAlign: "center", padding: "0 10%",
+          position: "relative", zIndex: 1, maxWidth: "1000px",
           opacity: heroVisible ? 1 : 0,
-          transform: heroVisible ? "translateY(0)" : "translateY(30px)",
+          transform: heroVisible ? "translateY(0)" : "translateY(60px)",
           transition: "opacity 1.2s ease, transform 1.2s ease",
-          maxWidth: "900px",
         }}>
-          <p style={{ color: "#00d4ff", letterSpacing: "6px", fontSize: "0.75rem", marginBottom: "24px", fontWeight: "bold" }}>
-            🇮🇳 INDIAN SPACE RESEARCH ORGANISATION
+          <p style={{ color: "#00d4ff", letterSpacing: "6px", fontSize: "0.7rem", marginBottom: "32px", fontFamily: "monospace" }}>
+            🇮🇳 INDIAN SPACE RESEARCH ORGANISATION — EST. 1969
           </p>
-         <h1 style={{
-  fontSize: "clamp(1.8rem, 4vw, 3rem)",
-  fontWeight: "bold",
-  color: "#fff", marginBottom: "8px", letterSpacing: "4px",
-  textShadow: "0 0 60px rgba(0,212,255,0.3)", lineHeight: 1.1,
-}}>
-  "सुस्वागतम् मिशन नियन्त्रणम्"
-</h1>
-<p style={{
-  color: "#00d4ff", fontSize: "0.75rem",
-  letterSpacing: "4px", marginBottom: "24px", fontWeight: "bold",
-}}>
-  ISRO MISSION CONTROL
-</p>
-          <p style={{
-            fontSize: "clamp(0.9rem, 2vw, 1.1rem)", color: "#cccccc",
-            marginBottom: "40px", letterSpacing: "1px", lineHeight: 1.8,
-            maxWidth: "600px", margin: "0 auto 40px",
-          }}>
-            Advanced telemetry, satellite tracking, and orbital database management system.
+          <h1 style={{ fontSize: "clamp(2.5rem, 8vw, 7rem)", fontWeight: "900", lineHeight: 1, marginBottom: "16px", letterSpacing: "-1px", color: "#fff" }}>
+            <span style={{ display: "block" }}>MISSION</span>
+            <span style={{ display: "block", WebkitTextStroke: "2px rgba(255,255,255,0.3)", color: "transparent" }}>CONTROL</span>
+          </h1>
+          <p style={{ fontSize: "clamp(1rem, 2vw, 1.4rem)", color: "rgba(0,212,255,0.9)", fontStyle: "italic", letterSpacing: "2px", marginBottom: "8px" }}>
+            "सुस्वागतम् मिशन नियन्त्रणम्"
           </p>
-          <div style={{ display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
+          <p style={{ color: "#555", fontSize: "0.7rem", letterSpacing: "4px", marginBottom: "48px" }}>
+            A WARM WELCOME TO MISSION CONTROL
+          </p>
+          <p style={{ fontSize: "clamp(0.9rem, 1.5vw, 1.1rem)", color: "#888", maxWidth: "500px", lineHeight: "1.9", marginBottom: "56px" }}>
+            Advanced telemetry, satellite tracking, and orbital database management system for ISRO's space missions.
+          </p>
+          <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
             <Link to="/missions" style={{
-              padding: "14px 40px", background: "#00d4ff",
-              color: "#000", textDecoration: "none",
-              letterSpacing: "3px", fontSize: "0.8rem",
-              fontWeight: "bold", fontFamily: "monospace",
-              transition: "all 0.3s ease",
+              padding: "16px 44px", background: "#00d4ff", color: "#000",
+              textDecoration: "none", letterSpacing: "3px", fontSize: "0.78rem",
+              fontWeight: "900", fontFamily: "monospace", transition: "all 0.3s ease", display: "inline-block",
             }}
-              onMouseEnter={e => { e.currentTarget.style.background = "#00aacc"; e.currentTarget.style.boxShadow = "0 0 25px #00d4ff"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = "#00d4ff"; e.currentTarget.style.boxShadow = "none"; }}
-            >
-              INITIALIZE DASHBOARD
-            </Link>
-            <Link to="/rockets" style={{
-              padding: "14px 40px", background: "transparent",
-              color: "#fff", textDecoration: "none",
-              letterSpacing: "3px", fontSize: "0.8rem",
-              fontWeight: "bold", fontFamily: "monospace",
-              border: "1px solid rgba(255,255,255,0.4)",
-              transition: "all 0.3s ease",
+              onMouseEnter={e => { e.currentTarget.style.background = "#fff"; e.currentTarget.style.transform = "translateY(-3px)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "#00d4ff"; e.currentTarget.style.transform = "translateY(0)"; }}
+            >EXPLORE MISSIONS →</Link>
+            <Link to="/access" style={{
+              padding: "16px 44px", background: "transparent", color: "#fff",
+              textDecoration: "none", letterSpacing: "3px", fontSize: "0.78rem",
+              fontWeight: "900", fontFamily: "monospace",
+              border: "1px solid rgba(255,255,255,0.2)", transition: "all 0.3s ease", display: "inline-block",
             }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = "#fff"; e.currentTarget.style.background = "rgba(255,255,255,0.1)"; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.4)"; e.currentTarget.style.background = "transparent"; }}
-            >
-              VIEW ROCKETS
-            </Link>
+              onMouseEnter={e => { e.currentTarget.style.borderColor = "#fff"; e.currentTarget.style.transform = "translateY(-3px)"; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)"; e.currentTarget.style.transform = "translateY(0)"; }}
+            >ACCESS PORTAL</Link>
           </div>
         </div>
 
-        {/* Scroll indicator */}
-        <div style={{
-          position: "absolute", bottom: "40px", left: "50%",
-          transform: "translateX(-50%)", zIndex: 2,
-          display: "flex", flexDirection: "column", alignItems: "center", gap: "8px",
-          animation: "bounce 2s infinite", opacity: 0.6,
-        }}>
-          <p style={{ fontSize: "0.65rem", letterSpacing: "4px", color: "#888" }}>SCROLL</p>
-          <div style={{ width: "1px", height: "50px", background: "linear-gradient(to bottom, #888, transparent)" }} />
+        <div style={{ position: "absolute", bottom: "40px", left: "6%", display: "flex", alignItems: "center", gap: "12px", opacity: 0.4 }}>
+          <div style={{ width: "40px", height: "1px", background: "#fff" }} />
+          <p style={{ fontSize: "0.65rem", letterSpacing: "4px", color: "#fff" }}>SCROLL</p>
         </div>
       </section>
 
-      {/* SCROLL SECTIONS */}
-      {sections.map((section, i) => (
-        <ScrollSection key={section.id} section={section} index={i + 1} />
-      ))}
+      {/* MARQUEE 1 */}
+      <div style={{ padding: "24px 0", borderTop: "1px solid rgba(255,255,255,0.05)", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+        <MarqueeRow items={marqueeItems1} direction={1} speed={25} />
+      </div>
+
+      {/* STATS */}
+      <section ref={statsRef} style={{ padding: "120px 6%" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1px", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.06)" }}>
+          {stats.map((stat, i) => (
+            <div key={i} style={{
+              padding: "60px 40px", background: "#000814",
+              opacity: statsVisible ? 1 : 0,
+              transform: statsVisible ? "translateY(0)" : "translateY(40px)",
+              transition: `opacity 0.8s ease ${i * 0.15}s, transform 0.8s ease ${i * 0.15}s`,
+            }}>
+              <p style={{ fontSize: "clamp(3rem, 6vw, 5rem)", fontWeight: "900", color: "#fff", marginBottom: "8px", lineHeight: 1 }}>{stat.value}</p>
+              <p style={{ fontSize: "0.7rem", color: "#555", letterSpacing: "4px" }}>{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* MARQUEE 2 */}
+      <div style={{ padding: "24px 0", borderTop: "1px solid rgba(255,255,255,0.05)", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+        <MarqueeRow items={marqueeItems2} direction={-1} speed={20} />
+      </div>
+
+      {/* MISSIONS GRID */}
+      <section ref={missionsRef} style={{ padding: "120px 6%" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "60px", flexWrap: "wrap", gap: "20px" }}>
+          <div>
+            <p style={{ color: "#555", letterSpacing: "4px", fontSize: "0.7rem", marginBottom: "16px" }}>FEATURED MISSIONS</p>
+            <h2 style={{ fontSize: "clamp(2rem, 5vw, 4rem)", fontWeight: "900", color: "#fff", lineHeight: 1 }}>
+              17 MISSIONS.<br />
+              <span style={{ WebkitTextStroke: "1px rgba(255,255,255,0.3)", color: "transparent" }}>INDIA TO THE STARS.</span>
+            </h2>
+          </div>
+          <Link to="/missions" style={{ color: "#00d4ff", textDecoration: "none", letterSpacing: "3px", fontSize: "0.75rem", fontFamily: "monospace", fontWeight: "bold", borderBottom: "1px solid #00d4ff", paddingBottom: "4px" }}>VIEW ALL →</Link>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1px", background: "rgba(255,255,255,0.06)" }}>
+          {missions.map((mission, i) => (
+            <Link to="/missions" key={i} style={{
+              padding: "40px", background: "#000814",
+              cursor: "pointer", position: "relative", overflow: "hidden",
+              textDecoration: "none",
+              opacity: missionsVisible ? 1 : 0,
+              transform: missionsVisible ? "translateY(0)" : "translateY(40px)",
+              transition: `opacity 0.8s ease ${i * 0.1}s, transform 0.8s ease ${i * 0.1}s, background 0.3s ease`,
+              display: "block",
+            }}
+              onMouseEnter={e => { e.currentTarget.style.background = `${mission.color}08`; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "#000814"; }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "32px" }}>
+                <span style={{ padding: "4px 12px", border: `1px solid ${mission.color}44`, color: mission.color, fontSize: "0.65rem", letterSpacing: "2px", fontFamily: "monospace" }}>{mission.status}</span>
+                <span style={{ color: "#333", fontSize: "0.7rem", letterSpacing: "2px" }}>{mission.year}</span>
+              </div>
+              <h3 style={{ fontSize: "1.4rem", fontWeight: "bold", color: "#fff", marginBottom: "8px" }}>{mission.name}</h3>
+              <p style={{ color: "#555", fontSize: "0.75rem", letterSpacing: "2px" }}>{mission.type} MISSION</p>
+              <div style={{ position: "absolute", bottom: "24px", right: "24px", color: mission.color, fontSize: "1.2rem", opacity: 0.3 }}>→</div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* QUOTE */}
+      <section ref={quoteRef} style={{
+        padding: "120px 6%",
+        borderTop: "1px solid rgba(255,255,255,0.05)",
+        borderBottom: "1px solid rgba(255,255,255,0.05)",
+        position: "relative", overflow: "hidden",
+      }}>
+        <div style={{
+          position: "absolute", left: "50%", top: "50%",
+          transform: `translate(-50%, -50%) translateY(${scrollY * 0.1}px)`,
+          fontSize: "20vw", color: "rgba(255,255,255,0.02)",
+          fontWeight: "900", whiteSpace: "nowrap", pointerEvents: "none", userSelect: "none",
+        }}>ISRO</div>
+        <div style={{
+          position: "relative", zIndex: 1, maxWidth: "800px", margin: "0 auto", textAlign: "center",
+          opacity: quoteVisible ? 1 : 0,
+          transform: quoteVisible ? "translateY(0)" : "translateY(40px)",
+          transition: "opacity 1s ease, transform 1s ease",
+        }}>
+          <p style={{ color: "#555", letterSpacing: "4px", fontSize: "0.65rem", marginBottom: "40px" }}>OUR MOTTO</p>
+          <h2 style={{ fontSize: "clamp(2rem, 5vw, 4rem)", fontWeight: "900", color: "#fff", lineHeight: 1.2, marginBottom: "24px" }}>
+            "भयत्यागाद् हि<br />
+            <span style={{ WebkitTextStroke: "1px rgba(255,255,255,0.3)", color: "transparent" }}>प्रस्थानम्।"</span>
+          </h2>
+          <p style={{ color: "#00d4ff", letterSpacing: "4px", fontSize: "0.8rem", marginBottom: "8px" }}>LIFE BEGINS WHEN FEAR ENDS</p>
+          <p style={{ color: "#333", fontSize: "0.7rem", letterSpacing: "2px" }}>— ANCIENT SANSKRIT WISDOM</p>
+        </div>
+      </section>
+
+      {/* EXPLORE LINKS */}
+      <section style={{ padding: "120px 6%" }}>
+        <p style={{ color: "#555", letterSpacing: "4px", fontSize: "0.7rem", marginBottom: "60px" }}>EXPLORE</p>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          {[
+            { to: "/rockets", label: "Launch Vehicles", sub: "4 ROCKETS", color: "#f97316" },
+            { to: "/satellites", label: "Satellites", sub: "17 IN ORBIT", color: "#a855f7" },
+            { to: "/scientists", label: "Scientists", sub: "THE VISIONARIES", color: "#22c55e" },
+            { to: "/astronauts", label: "Astronauts", sub: "INDIA'S HEROES", color: "#facc15" },
+            { to: "/launch-sites", label: "Launch Sites", sub: "2 SITES", color: "#ec4899" },
+          ].map((item, i) => (
+            <Link key={i} to={item.to} style={{
+              display: "flex", justifyContent: "space-between", alignItems: "center",
+              padding: "28px 0", borderBottom: "1px solid rgba(255,255,255,0.06)",
+              textDecoration: "none", transition: "all 0.3s ease",
+            }}
+              onMouseEnter={e => { e.currentTarget.style.paddingLeft = "16px"; e.currentTarget.style.borderBottomColor = item.color; }}
+              onMouseLeave={e => { e.currentTarget.style.paddingLeft = "0"; e.currentTarget.style.borderBottomColor = "rgba(255,255,255,0.06)"; }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: "24px" }}>
+                <span style={{ color: "#333", fontSize: "0.7rem", fontFamily: "monospace" }}>0{i + 1}</span>
+                <span style={{ fontSize: "clamp(1.2rem, 3vw, 2rem)", fontWeight: "bold", color: "#fff" }}>{item.label}</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "24px" }}>
+                <span style={{ color: "#555", fontSize: "0.7rem", letterSpacing: "3px" }}>{item.sub}</span>
+                <span style={{ color: item.color, fontSize: "1.2rem" }}>→</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section ref={ctaRef} style={{
+        padding: "120px 6%", textAlign: "center",
+        background: "radial-gradient(ellipse at center, rgba(0,212,255,0.05) 0%, transparent 70%)",
+        borderTop: "1px solid rgba(255,255,255,0.05)",
+      }}>
+        <div style={{
+          opacity: ctaVisible ? 1 : 0,
+          transform: ctaVisible ? "translateY(0)" : "translateY(40px)",
+          transition: "opacity 1s ease, transform 1s ease",
+        }}>
+          <p style={{ color: "#555", letterSpacing: "4px", fontSize: "0.7rem", marginBottom: "32px" }}>ACCESS PORTAL</p>
+          <h2 style={{ fontSize: "clamp(2rem, 6vw, 5rem)", fontWeight: "900", color: "#fff", marginBottom: "48px", lineHeight: 1.1 }}>
+            AUTHORIZED<br />
+            <span style={{ WebkitTextStroke: "1px rgba(255,255,255,0.3)", color: "transparent" }}>PERSONNEL ONLY</span>
+          </h2>
+          <Link to="/access" style={{
+            padding: "18px 56px", background: "#00d4ff", color: "#000",
+            textDecoration: "none", letterSpacing: "4px", fontSize: "0.8rem",
+            fontWeight: "900", fontFamily: "monospace",
+            display: "inline-block", transition: "all 0.3s ease",
+          }}
+            onMouseEnter={e => { e.currentTarget.style.background = "#fff"; e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 20px 40px rgba(0,212,255,0.3)"; }}
+            onMouseLeave={e => { e.currentTarget.style.background = "#00d4ff"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}
+          >ENTER MISSION CONTROL</Link>
+        </div>
+      </section>
+
+      <Footer />
 
       <style>{`
-        @keyframes bounce {
-          0%, 100% { transform: translateX(-50%) translateY(0); }
-          50% { transform: translateX(-50%) translateY(10px); }
+        @media (max-width: 768px) {
+          section { padding-left: 5% !important; padding-right: 5% !important; }
         }
       `}</style>
-      <Footer />
     </div>
   );
 }
